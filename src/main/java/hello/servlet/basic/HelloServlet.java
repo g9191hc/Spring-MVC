@@ -24,6 +24,5 @@ public class HelloServlet extends HttpServlet {
         PrintWriter writer = response.getWriter();
         writer.write("hello " + username + "\n");
         writer.write("have a nice day!");
-
     }
 }
