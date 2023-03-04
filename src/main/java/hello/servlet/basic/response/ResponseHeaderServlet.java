@@ -2,6 +2,7 @@ package hello.servlet.basic.response;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,22 +14,41 @@ public class ResponseHeaderServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Status line
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-
+        response.setStatus(HttpServletResponse.SC_OK);
 
         // Headers
-
-        // - header 편의메서드
         content(response);
+        cookie(response);
+//        redirect(response);
         response.setHeader("Pragma", "no-cache");
         response.setHeader("My-Header", "hello");
 
         PrintWriter writer = response.getWriter();
-        writer.println("안녕하세요");
+        writer.println("HTTP Body!!");
     }
+
+    //header 편의메서드
     private void content(HttpServletResponse response) {
         //Content-Type: text/plain;charset=utf-8
+        //response.setHeader("Context-Type","text/plain;charset=utf-8");
         response.setContentType("text/plain");
         response.setCharacterEncoding("utf-8");
+    }
+
+    //Header 쿠키 편의메서드
+    private void cookie(HttpServletResponse response) {
+        //Set-Cookie: myCookie=good; Max-Age=600;
+        //response.setHeader("Set-Cookie", "myCookie=good; Max-Age=600");
+        Cookie cookie = new Cookie("myCookie", "good");
+        cookie.setMaxAge(600); //600초
+        response.addCookie(cookie);
+    }
+    //Header 리다이렉트 편의메서드
+    private void redirect(HttpServletResponse response) throws IOException {
+        //Status Code 302
+        //Location: /basic/hello-form.html
+        //response.setStatus(HttpServletResponse.SC_FOUND); //302
+        //response.setHeader("Location", "/basic/hello-form.html");
+        response.sendRedirect("/basic/hello-form.html");
     }
 }
